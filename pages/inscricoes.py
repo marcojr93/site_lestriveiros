@@ -79,8 +79,8 @@ with st.form("form_inscricao"):
 
                 # Envia e-mail para o organizador
                 try:
-                    remetente = os.environ.get("EMAIL_REMETENTE")
-                    senha = os.environ.get("EMAIL_SENHA")
+                    remetente = os.environ.get("lestriveiros@gmail.com")
+                    senha = os.environ.get("a93ee3bianca")
                     destinatario = "bianca.s.cordeiro@gmail.com"
                     assunto = f"Nova inscrição: {dados_inscricao['equipe']} ({dados_inscricao['data']})"
                     corpo = f"""
