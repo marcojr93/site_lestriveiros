@@ -2,5 +2,3 @@ streamlit
 pillow
 firebase-admin
 email
-smtplib
-os
