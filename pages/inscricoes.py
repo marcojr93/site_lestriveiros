@@ -1,5 +1,9 @@
 import streamlit as st
 from firebase_config import get_firestore_client
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 st.set_page_config(page_title="Formulário de Inscrição", layout="centered", initial_sidebar_state="collapsed")
 
@@ -72,6 +76,32 @@ with st.form("form_inscricao"):
             try:
                 # Salva em subcoleção por data
                 db.collection("inscricoes_trivia").document(data_limpa).collection("equipes").add(dados_inscricao)
+
+                # Envia e-mail para o organizador
+                try:
+                    remetente = os.environ.get("EMAIL_REMETENTE")
+                    senha = os.environ.get("EMAIL_SENHA")
+                    destinatario = "bianca.s.cordeiro@gmail.com"
+                    assunto = f"Nova inscrição: {dados_inscricao['equipe']} ({dados_inscricao['data']})"
+                    corpo = f"""
+Nova inscrição recebida:
+
+Equipe: {dados_inscricao['equipe']}
+Data: {dados_inscricao['data']}
+E-mail do capitão: {dados_inscricao['email']}
+Quantidade de membros: {dados_inscricao['membros']}
+"""
+                    msg = MIMEMultipart()
+                    msg['From'] = remetente
+                    msg['To'] = destinatario
+                    msg['Subject'] = assunto
+                    msg.attach(MIMEText(corpo, 'plain'))
+                    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+                        server.login(remetente, senha)
+                        server.sendmail(remetente, destinatario, msg.as_string())
+                except Exception as e:
+                    st.warning("Inscrição salva, mas não foi possível enviar o e-mail de aviso.")
+                    st.exception(e)
 
                 # Guarda localmente e redireciona
                 st.session_state["inscricao_confirmada"] = dados_inscricao
