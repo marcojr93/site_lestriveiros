@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Confirmação", layout="centered", initial_sidebar_state="collapsed")
 
-st.title("✅ Inscrição Confirmada!")
+st.title("✅ Inscrição Enviada!")
 
 if "inscricao_confirmada" not in st.session_state:
     st.error("Você ainda não enviou a inscrição.")
@@ -10,7 +10,7 @@ if "inscricao_confirmada" not in st.session_state:
 
 dados = st.session_state["inscricao_confirmada"]
 
-st.success("Sua equipe foi inscrita com sucesso!")
+st.success("Sua incrição será confirmada em breve")
 
 st.markdown(f"""
 - **Nome da Equipe:** {dados['equipe']}
@@ -20,7 +20,7 @@ st.markdown(f"""
 """)
 
 
-st.info("📬 Em breve você receberá o request de pagamento através do e-mail cadastrado.")
+st.info("📬 Após confirmação, você receberá o request de pagamento através do e-mail cadastrado.")
 
 # Botão para voltar ao menu inicial com refresh
 if st.button("Voltar ao início"):
