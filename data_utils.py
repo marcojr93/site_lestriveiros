@@ -41,7 +41,7 @@ def create_readable_names(columns):
     
     for col in columns:
         if col == "TOTAL":
-            nomes_legiveis[col] = "📊 Ranking Total"
+            nomes_legiveis[col] = "📊 Ranking Anual"
         elif "TRIVIA" in col.upper():
             # Remove "TRIVIA" e formata o nome
             nome_limpo = col.replace("TRIVIA", "").replace("trivia", "").strip()
