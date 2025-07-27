@@ -27,4 +27,4 @@ if st.button("Voltar ao início"):
     # Limpa a sessão e faz refresh ao voltar para o início
     for key in list(st.session_state.keys()):
         del st.session_state[key]
-    st.switch_page("homepage.py")
+    st.switch_page("pages/homepage.py")

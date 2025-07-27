@@ -1,11 +1,15 @@
-import streamlit as st
-from firebase_config import get_firestore_client
+import sys
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import streamlit as st
 
-st.set_page_config(page_title="Formulário de Inscrição", layout="centered", initial_sidebar_state="collapsed")
+# Adiciona o diretório src ao path para importações
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from firebase_config import get_firestore_client
+from ui_utils import setup_page_config
+from email_utils import enviar_email_inscricao
+
+setup_page_config("Formulário de Inscrição")
 
 # Verifica se nome da equipe foi salvo
 if "equipe_nome" not in st.session_state:
@@ -38,18 +42,41 @@ for data in datas:
     if vagas_restantes > 0:
         datas_disponiveis.append(f"{data} ({vagas_restantes} vaga(s) restante(s))")
 
+# Verifica se todas as datas estão lotadas
 if not datas_disponiveis:
-    st.warning("⚠️ Todas as datas estão com lotação máxima (6 equipes). Inscrições encerradas.")
+    st.warning("⚠️ Todas as datas estão com lotação máxima.")
+    st.info("🔔 As inscrições estão encerradas no momento.")
+    
+    # Botão para retornar ao início quando inscrições estão encerradas
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🏠 Voltar ao Início", use_container_width=True, type="primary"):
+            st.switch_page("main.py")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Botões adicionais de navegação
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🏆 Ver Ranking", use_container_width=True):
+            st.switch_page("pages/ranking_anual.py")
+    
+    with col2:
+        if st.button("⬅️ Voltar à página anterior", use_container_width=True):
+            st.switch_page("pages/homepage.py")
+    
     st.stop()
 
-# Formulário
+# Formulário (só executa se há vagas disponíveis)
 with st.form("form_inscricao"):
     data_formatada = st.selectbox("Data da Trívia *", datas_disponiveis)
     email_capitao = st.text_input("E-mail de contato do capitão *")
     st.caption("📩 Necessário para envio do Interac para pagamento")
     qtd_membros = st.selectbox("Quantidade de membros da equipe *", list(range(1, 11)))
 
-    enviar = st.form_submit_button("Enviar Inscrição ✅")
+    enviar = st.form_submit_button("Enviar Inscrição ✅", type="primary")
 
     if enviar:
         if not email_capitao:
@@ -78,30 +105,9 @@ with st.form("form_inscricao"):
                 db.collection("inscricoes_trivia").document(data_limpa).collection("equipes").add(dados_inscricao)
 
                 # Envia e-mail para o organizador
-                try:
-                    remetente = "lestriveiros@gmail.com"
-                    senha = "twfu tzrn ijgi zmxv"
-                    destinatario = "bianca.s.cordeiro@gmail.com"
-                    assunto = f"Nova inscrição: {dados_inscricao['equipe']} ({dados_inscricao['data']})"
-                    corpo = f"""
-Nova inscrição recebida:
-
-Equipe: {dados_inscricao['equipe']}
-Data: {dados_inscricao['data']}
-E-mail do capitão: {dados_inscricao['email']}
-Quantidade de membros: {dados_inscricao['membros']}
-"""
-                    msg = MIMEMultipart()
-                    msg['From'] = remetente
-                    msg['To'] = destinatario
-                    msg['Subject'] = assunto
-                    msg.attach(MIMEText(corpo, 'plain'))
-                    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-                        server.login(remetente, senha)
-                        server.sendmail(remetente, destinatario, msg.as_string())
-                except Exception as e:
-                    st.warning("Inscrição salva, mas não foi possível enviar o e-mail de aviso.")
-                    st.exception(e)
+                success, message = enviar_email_inscricao(dados_inscricao)
+                if not success:
+                    st.warning(f"Inscrição salva, mas erro no e-mail: {message}")
 
                 # Guarda localmente e redireciona
                 st.session_state["inscricao_confirmada"] = dados_inscricao
@@ -111,3 +117,22 @@ Quantidade de membros: {dados_inscricao['membros']}
             except Exception as e:
                 st.error("Erro ao salvar no Firebase.")
                 st.exception(e)
+
+# Botões de navegação na parte inferior (só mostra se formulário está disponível)
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("---")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button("⬅️ Voltar", use_container_width=True):
+        st.switch_page("pages/homepage.py")
+
+with col2:
+    if st.button("🏠 Início", use_container_width=True):
+        st.switch_page("main.py")
+
+with col3:
+    if st.button("🏆 Ranking", use_container_width=True):
+        st.switch_page("pages/ranking_anual.py")
+
