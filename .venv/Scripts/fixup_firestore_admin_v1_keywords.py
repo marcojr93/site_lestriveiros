@@ -1,4 +1,4 @@
-#!C:\Users\bih14\OneDrive\Marco's PC\Trivia 2025\Material de apoio\Projeto Site\Site completo\.venv\Scripts\python.exe
+#!c:\Users\bih14\OneDrive\Marco's PC\Trivia 2025\Material de apoio\Projeto Site\Site completo\site_lestriveiros\.venv\Scripts\python.exe
 # -*- coding: utf-8 -*-
 # Copyright 2025 Google LLC
 #

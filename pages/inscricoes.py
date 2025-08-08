@@ -47,23 +47,31 @@ if not datas_disponiveis:
     st.warning("⚠️ Todas as datas estão com lotação máxima.")
     st.info("🔔 As inscrições estão encerradas no momento.")
     
-    # Botão para retornar ao início quando inscrições estão encerradas
+    # Destaque para lista de espera
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.info("💡 **Ainda quer participar?** Entre na lista de espera e seja notificado caso surjam vagas!")
+    
+    # Botão principal para lista de espera
     st.markdown("<br>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("🏠 Voltar ao Início", use_container_width=True, type="primary"):
-            st.switch_page("main.py")
+        if st.button("📝 Entrar na Lista de Espera", use_container_width=True, type="primary"):
+            st.switch_page("pages/lista_espera.py")
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Botões adicionais de navegação
-    col1, col2 = st.columns(2)
+    # Outros botões de navegação
+    col1, col2, col3 = st.columns(3)
     with col1:
+        if st.button("🏠 Voltar ao Início", use_container_width=True):
+            st.switch_page("main.py")
+    
+    with col2:
         if st.button("🏆 Ver Ranking", use_container_width=True):
             st.switch_page("pages/ranking_anual.py")
     
-    with col2:
+    with col3:
         if st.button("⬅️ Voltar à página anterior", use_container_width=True):
             st.switch_page("pages/homepage.py")
     

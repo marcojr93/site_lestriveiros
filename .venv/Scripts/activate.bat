@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\bih14\OneDrive\Marco's PC\Trivia 2025\Material de apoio\Projeto Site\Site completo\.venv"
+set "VIRTUAL_ENV=c:\Users\bih14\OneDrive\Marco's PC\Trivia 2025\Material de apoio\Projeto Site\Site completo\site_lestriveiros\.venv"
 
 if not defined PROMPT set PROMPT=$P$G
 

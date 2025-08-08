@@ -1,0 +1,18 @@
+# Arquivos de ambiente
+.env
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Chaves e credenciais
+firebase_key.json
+*.key
+
+# Logs
+*.log
+
+# Arquivos temporários
+.DS_Store
+Thumbs.db
