@@ -21,9 +21,9 @@ st.title(f"📋 Inscrição da Equipe: {st.session_state['equipe_nome']}")
 # 🔎 Busca número de inscrições por data
 try:
     db = get_firestore_client()
-    datas = ["23 de julho", "25 de julho"]
+    datas = ["24 de Agosto"]
     contagem_datas = {}
-    vagas_totais = 6
+    vagas_totais = 10
 
     for data in datas:
         equipes = db.collection("inscricoes_trivia").document(data).collection("equipes").stream()
@@ -143,4 +143,5 @@ with col2:
 with col3:
     if st.button("🏆 Ranking", use_container_width=True):
         st.switch_page("pages/ranking_anual.py")
+
 
