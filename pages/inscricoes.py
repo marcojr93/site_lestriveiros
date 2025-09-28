@@ -21,7 +21,7 @@ st.title(f"📋 Inscrição da Equipe: {st.session_state['equipe_nome']}")
 # 🔎 Busca número de inscrições por data
 try:
     db = get_firestore_client()
-    datas = ["24 de Agosto"]
+    datas = ["8 de Outubro"]
     contagem_datas = {}
     vagas_totais = 10
 
@@ -82,7 +82,7 @@ with st.form("form_inscricao"):
     data_formatada = st.selectbox("Data da Trívia *", datas_disponiveis)
     email_capitao = st.text_input("E-mail de contato do capitão *")
     st.caption("📩 Necessário para envio do Interac para pagamento")
-    qtd_membros = st.selectbox("Quantidade de membros da equipe *", list(range(1, 11)))
+    qtd_membros = st.selectbox("Quantidade de membros da equipe *", list(range(1, 9)))
 
     enviar = st.form_submit_button("Enviar Inscrição ✅", type="primary")
 
@@ -143,5 +143,6 @@ with col2:
 with col3:
     if st.button("🏆 Ranking", use_container_width=True):
         st.switch_page("pages/ranking_anual.py")
+
 
 
