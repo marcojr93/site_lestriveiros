@@ -7,7 +7,7 @@ def load_ranking_data():
     """Carrega dados do ranking com cache."""
     try:
         # Tenta carregar da nova estrutura primeiro
-        file_path = os.path.join("assets", "data", "ranking_anual.xlsx")
+        file_path = os.path.join("assets", "ranking_anual.xlsx")
         if not os.path.exists(file_path):
             # Fallback para o caminho atual durante a transição
             file_path = "ranking_anual.xlsx"
